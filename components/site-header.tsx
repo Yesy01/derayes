@@ -1,16 +1,16 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from '@/lib/navigation';
+import { usePathname } from '@/lib/navigation';
 import { ArrowUpRight, ShieldCheck } from 'lucide-react';
 
 export function SiteHeader() {
   const path = usePathname();
   return (
     <>
-      <a href="#main-content" className="skip-link">
+      <Link href={`${path}#main-content`} className="skip-link">
         Skip to content
-      </a>
+      </Link>
       <div className="demo-bar">
         <span className="demo-pill">PROOF OF CONCEPT</span>
         <span>

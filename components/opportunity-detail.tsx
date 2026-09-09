@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from '@/lib/navigation';
+import { assetPath } from '@/lib/asset-path';
 import { useState } from 'react';
 import {
   ArrowLeft,
@@ -117,11 +117,10 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
     <div className="detail-grid">
       <div className="main-column">
         <div className="overview-photo">
-          <Image
-            unoptimized
+          <img
             width={1600}
             height={1000}
-            src={o.image}
+            src={assetPath(o.image)}
             alt={`Illustrative asset for ${o.name}`}
           />
           <span>Illustrative photography · Not the actual project</span>

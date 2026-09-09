@@ -2375,3 +2375,8 @@ details[open] > summary > svg:last-child {
 .image-label {
   max-width: calc(100% - 50px);
 }
+
+:root {
+  --font-geist-sans: Arial, Helvetica, sans-serif;
+  --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}

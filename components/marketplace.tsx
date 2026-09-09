@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from '@/lib/navigation';
+import { assetPath } from '@/lib/asset-path';
 import { useState } from 'react';
 import {
   ArrowUpRight,
@@ -39,11 +39,10 @@ export function OpportunityCard({
         className="card-image-link"
         aria-label={`Review ${o.name}`}
       >
-        <Image
-          unoptimized
+        <img
           width={1600}
           height={1000}
-          src={o.image}
+          src={assetPath(o.image)}
           alt={`Illustrative ${o.sector.toLowerCase()} asset`}
         />
         <span className="card-sector">

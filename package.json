@@ -1,16 +1,20 @@
 {
-  "name": "sites-project",
+  "name": "derayes",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "wrangler dev --config dist/server/wrangler.json",
-    "lint": "oxlint",
-    "format": "oxfmt"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview",
+    "lint": "oxlint app components/site-header.tsx components/marketplace.tsx components/opportunity-detail.tsx lib tests vite.config.ts",
+    "format": "oxfmt",
+    "build:pages": "DERAYES_BASE_PATH=/derayes/ vite build",
+    "test": "node --experimental-strip-types --test tests/opportunities.test.mjs tests/navigation.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:build": "node --test tests/static-build.test.mjs"
   },
   "dependencies": {
     "react": "19.2.6",

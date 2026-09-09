@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from '@/lib/navigation';
+import { assetPath } from '@/lib/asset-path';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -44,11 +44,10 @@ export default function Home() {
           </p>
         </div>
         <div className="hero-visual">
-          <Image
-            unoptimized
+          <img
             width={1600}
             height={1000}
-            src="/images/residential.jpg"
+            src={assetPath('/images/residential.jpg')}
             alt="Illustrative modern residential building with balconies"
             className="hero-image"
           />
