@@ -5,10 +5,10 @@ import {
   ArrowUpRight,
   ShieldCheck,
   FileCheck2,
-  Eye,
   Fingerprint,
-  Check,
   Building2,
+  Scale,
+  Braces,
 } from 'lucide-react';
 
 export default function Home() {
@@ -17,30 +17,29 @@ export default function Home() {
       <section className="hero wrap">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="amber-dot" /> CLARITY BEFORE COMMITMENT
+            <span className="amber-dot" /> FROM ASSET TO TOKENISATION READINESS
           </p>
           <h1>
-            Real assets.
-            <br />
-            Clear evidence.
-            <br />
-            <em>Earned trust.</em>
+            Derayes makes real-world assets <em>tokenisation-ready.</em>
           </h1>
           <p className="hero-description">
-            A clearer view of asset-backed opportunities. Explore the documents,
-            understand the risks, and follow the evidence before you decide.
+            Verify the asset, clarify the rights, structure the records, then
+            explore compliant tokenisation.
           </p>
           <div className="hero-actions">
             <Link className="button primary" href="/opportunities">
-              Explore opportunities <ArrowUpRight size={18} />
+              Explore assets <ArrowUpRight size={18} />
             </Link>
-            <a className="text-link" href="#how-it-works">
-              How trust works <ArrowRight size={17} />
-            </a>
+            <Link
+              className="text-link"
+              href="/opportunities/lagos-coliving/readiness"
+            >
+              View tokenisation readiness demo <ArrowRight size={17} />
+            </Link>
           </div>
           <p className="quiet-note">
-            <ShieldCheck size={16} /> Built for informed decisions. No
-            investments processed.
+            <ShieldCheck size={16} /> Demo only. No real investments, live token
+            issuance, or legal ownership transfer.
           </p>
         </div>
         <div className="hero-visual">
@@ -52,7 +51,8 @@ export default function Home() {
             className="hero-image"
           />
           <div className="image-label">
-            <span className="tiny-dot" /> REAL ASSETS. VISIBLE ACCOUNTABILITY.
+            <span className="tiny-dot" /> ASSET → VERIFIED ASSET →
+            TOKENISATION-READY
           </div>
           <div className="hero-assessment">
             <div className="assessment-head">
@@ -60,32 +60,28 @@ export default function Home() {
                 <ShieldCheck size={22} />
               </span>
               <div>
-                <strong>Trust, with a paper trail.</strong>
-                <span>Illustrative verification snapshot</span>
+                <strong>Lagos readiness snapshot</strong>
+                <span>Illustrative assessment only</span>
               </div>
               <span className="small-tag">DEMO</span>
             </div>
             <div className="assessment-row">
-              <span>Ownership documentation</span>
-              <span>
-                <Check size={15} /> Reviewed
-              </span>
+              <span>Asset verification</span>
+              <span>65%</span>
             </div>
             <div className="assessment-row">
-              <span>Use of funds</span>
-              <span>
-                <Check size={15} /> Disclosed
-              </span>
+              <span>Legal enforceability</span>
+              <span className="amber-text">20%</span>
             </div>
             <div className="assessment-row">
-              <span>Project risk assessment</span>
-              <span className="amber-text">1 open item</span>
+              <span>Overall readiness</span>
+              <span className="amber-text">42%</span>
             </div>
             <Link
-              href="/opportunities/cedar-residences/trust"
+              href="/opportunities/lagos-coliving/readiness"
               className="assessment-link"
             >
-              See the complete trust checklist <ArrowUpRight size={16} />
+              See the readiness breakdown <ArrowUpRight size={16} />
             </Link>
           </div>
           <p className="image-caption">
@@ -95,15 +91,15 @@ export default function Home() {
       </section>
       <section className="principles">
         <div className="wrap principles-inner">
-          <span>THE FOUNDATION OF A BETTER DECISION</span>
+          <span>TRUST INFRASTRUCTURE BEFORE TOKEN ISSUANCE</span>
           <p>
-            <FileCheck2 size={20} /> Evidence you can inspect
+            <FileCheck2 size={20} /> Assets and documents verified
           </p>
           <p>
-            <Eye size={20} /> Risks you can understand
+            <Scale size={20} /> Rights and protections clarified
           </p>
           <p>
-            <Fingerprint size={20} /> Records you can trace
+            <Fingerprint size={20} /> Records you can audit
           </p>
         </div>
       </section>
@@ -112,14 +108,14 @@ export default function Home() {
           <div>
             <p className="eyebrow">THE DERAYES APPROACH</p>
             <h2>
-              Trust is a process.
+              Tokenisation is a process.
               <br />
-              Make every step visible.
+              Start with what must be trusted.
             </h2>
           </div>
           <p>
-            From the underlying asset to the latest update,
-            <br className="desktop-break" /> a connected view of what matters.
+            A pathway from an asset listing to a documented, legally reviewed,
+            <br className="desktop-break" /> technically structured opportunity.
           </p>
         </div>
         <div className="steps-grid">
@@ -127,23 +123,23 @@ export default function Home() {
             {
               n: '01',
               icon: Building2,
-              title: 'Explore the opportunity',
-              text: 'Understand the asset, its purpose, and the people responsible.',
+              title: 'Start with the real asset',
+              text: 'Understand the asset, project owner, location, proposed use, and risks.',
               href: '/opportunities',
             },
             {
               n: '02',
-              icon: FileCheck2,
-              title: 'Look beyond the summary',
-              text: 'Review supporting documents, open questions, and disclosed risks.',
-              href: '/opportunities/cedar-residences/trust',
+              icon: Scale,
+              title: 'Verify and clarify rights',
+              text: 'Review evidence, legal enforceability, classification, and contributor protection.',
+              href: '/opportunities/lagos-coliving/trust',
             },
             {
               n: '03',
-              icon: Fingerprint,
-              title: 'Follow the evidence',
-              text: 'Trace fund allocations, project updates, and timestamped records.',
-              href: '/opportunities/cedar-residences/integrity',
+              icon: Braces,
+              title: 'Assess tokenisation readiness',
+              text: 'Connect off-chain records to a mock token design only after the trust foundation is visible.',
+              href: '/opportunities/lagos-coliving/readiness',
             },
           ].map((s) => (
             <Link className="step" href={s.href} key={s.n}>
@@ -162,10 +158,10 @@ export default function Home() {
         <div className="closing-band">
           <div>
             <p className="eyebrow">REAL ESTATE · AGRICULTURE · SME</p>
-            <h2>Different assets. One standard of clarity.</h2>
+            <h2>Real estate first. One readiness standard that can expand.</h2>
           </div>
           <Link className="button light" href="/opportunities">
-            Explore the demo <ArrowUpRight size={18} />
+            Explore the asset pathway <ArrowUpRight size={18} />
           </Link>
         </div>
       </section>

@@ -14,8 +14,8 @@ export function SiteHeader() {
       <div className="demo-bar">
         <span className="demo-pill">PROOF OF CONCEPT</span>
         <span>
-          Explore the experience. No real investments, payments, or financial
-          commitments.
+          Demo only. No real investments, live token issuance, payments, or
+          legal ownership transfer.
         </span>
       </div>
       <header className="site-header wrap">
@@ -30,17 +30,27 @@ export function SiteHeader() {
             className={path.startsWith('/opportunities') ? 'active' : ''}
             href="/opportunities"
           >
-            Opportunities
+            Assets
           </Link>
-          <Link href="/#how-it-works">How it works</Link>
-          <Link href="/opportunities/cedar-residences/integrity">
-            Transparency
+          <Link
+            className={path === '/incubation' ? 'active' : ''}
+            href="/incubation"
+          >
+            Incubation
+          </Link>
+          <Link
+            className={path === '/expansion' ? 'active' : ''}
+            href="/expansion"
+          >
+            Expansion
           </Link>
         </nav>
-        <Link className="button header-cta" href="/opportunities">
-          Explore demo <ArrowUpRight size={16} />
+        <Link className="button header-cta" href="/ask">
+          Venture Day ask <ArrowUpRight size={16} />
         </Link>
       </header>
     </>
   );
 }
+
+export const Navbar = SiteHeader;

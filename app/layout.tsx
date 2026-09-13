@@ -14,15 +14,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <ShieldCheck size={24} />
             derayes<span className="brand-dot">.</span>
           </Link>
-          <p>Trust infrastructure for asset-backed opportunities.</p>
+          <p>A pathway to compliant tokenised real-world assets.</p>
           <span className="small-tag">PROOF OF CONCEPT</span>
         </div>
         <div className="footer-bottom">
           <p>
             All opportunities, documents, figures, and verification results are
-            fictional demo data. Derayes does not offer investments or process
-            funds. Document review does not establish asset safety or regulatory
-            approval.
+            fictional demo data. Derayes does not offer investments, issue live
+            tokens, process funds, or transfer legal ownership. Readiness does
+            not establish asset safety or regulatory approval.
           </p>
           <span>© 2026 Derayes</span>
         </div>
@@ -30,3 +30,5 @@ export function SiteLayout({ children }: { children: ReactNode }) {
     </>
   );
 }
+
+export const Layout = SiteLayout;

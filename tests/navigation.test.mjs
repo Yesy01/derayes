@@ -6,8 +6,11 @@ test('native links use static-host-compatible hash routes', () => {
   for (const route of [
     '/',
     '/opportunities',
-    '/opportunities/cedar-residences/trust',
-    '/opportunities/precision-works/integrity',
+    '/opportunities/lagos-coliving/readiness',
+    '/opportunities/food-processing/token',
+    '/incubation',
+    '/expansion',
+    '/ask',
   ]) {
     assert.equal(parseRoute(routeHref(route)).path, route);
   }

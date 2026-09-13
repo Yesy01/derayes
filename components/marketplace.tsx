@@ -9,7 +9,6 @@ import {
   Sprout,
   Factory,
   MapPin,
-  ShieldCheck,
   ArrowRight,
   Info,
 } from 'lucide-react';
@@ -20,17 +19,14 @@ import {
   money,
   type Opportunity,
 } from '@/lib/opportunities';
+import { ReadinessScore, StatusBadge } from '@/components/trust-components';
 
 const sectorIcons = {
   'Real Estate': Building2,
   Agriculture: Sprout,
   SME: Factory,
 };
-export function OpportunityCard({
-  opportunity: o,
-}: {
-  opportunity: Opportunity;
-}) {
+export function AssetCard({ opportunity: o }: { opportunity: Opportunity }) {
   const Icon = sectorIcons[o.sector];
   return (
     <article className="opportunity-card">
@@ -53,8 +49,7 @@ export function OpportunityCard({
       </Link>
       <div className="opportunity-card-body">
         <div className="card-status">
-          <ShieldCheck size={15} />
-          <span>Evidence reviewed · Demo</span>
+          <StatusBadge tone="amber">{o.verificationStatus}</StatusBadge>
         </div>
         <Link href={`/opportunities/${o.id}`}>
           <h2>{o.name}</h2>
@@ -66,22 +61,17 @@ export function OpportunityCard({
         <p className="card-description">{o.tagline}</p>
         <div className="card-facts">
           <div>
-            <span>Proposed project budget</span>
+            <span>Funding requirement</span>
             <strong>{money(o.budget)}</strong>
           </div>
           <div>
-            <span>Project horizon</span>
-            <strong>{o.duration}</strong>
+            <span>Risk level</span>
+            <strong>{o.riskLevel}</strong>
           </div>
         </div>
-        <div className="card-trust">
-          <span>
-            <span className="amber-dot" />1 evidence item open
-          </span>
-          <span>5/6 checks</span>
-        </div>
+        <ReadinessScore value={o.readiness} compact />
         <Link className="card-review" href={`/opportunities/${o.id}`}>
-          Review opportunity <ArrowUpRight size={18} />
+          View Trust Room <ArrowUpRight size={18} />
         </Link>
       </div>
     </article>
@@ -99,12 +89,12 @@ export function Marketplace() {
         <div>
           <p className="eyebrow">
             <span className="amber-dot" />
-            THE OPPORTUNITY MARKETPLACE
+            TOKENISATION READINESS MARKETPLACE
           </p>
-          <h1>Start with the evidence.</h1>
+          <h1>Explore assets before tokenisation.</h1>
           <p className="page-description">
-            Explore the assets. Review what’s known. See what still needs an
-            answer.
+            Compare verification progress, readiness, documents, and risks
+            before any participation structure is considered.
           </p>
         </div>
         <span className="outline-label">3 illustrative opportunities</span>
@@ -138,7 +128,7 @@ export function Marketplace() {
           <TabsContent value={s} key={s}>
             <div className="opportunity-grid">
               {filterOpportunities(s).map((o) => (
-                <OpportunityCard key={o.id} opportunity={o} />
+                <AssetCard key={o.id} opportunity={o} />
               ))}
             </div>
           </TabsContent>
@@ -147,13 +137,12 @@ export function Marketplace() {
       <div className="info-banner">
         <Info size={19} />
         <p>
-          <strong>Evidence reviewed isn’t a guarantee.</strong> Demo checks
-          indicate that sample documents have been reviewed for consistency.
-          They do not establish asset safety, regulatory approval, or investment
-          suitability.
+          <strong>Readiness is not approval.</strong> Scores are fixed demo
+          assessments of sample records. They do not establish asset safety,
+          regulatory approval, legal rights, or investment suitability.
         </p>
-        <Link href="/opportunities/cedar-residences/trust">
-          Understand the checks <ArrowRight size={16} />
+        <Link href="/opportunities/lagos-coliving/readiness">
+          View the readiness demo <ArrowRight size={16} />
         </Link>
       </div>
     </main>

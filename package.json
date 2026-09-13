@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "start": "vite preview",
-    "lint": "oxlint app components/site-header.tsx components/marketplace.tsx components/opportunity-detail.tsx lib tests vite.config.ts",
+    "lint": "oxlint app components/site-header.tsx components/marketplace.tsx components/opportunity-detail.tsx components/trust-components.tsx components/venture-pages.tsx lib tests vite.config.ts",
     "format": "oxfmt",
     "build:pages": "DERAYES_BASE_PATH=/derayes/ vite build",
     "test": "node --experimental-strip-types --test tests/opportunities.test.mjs tests/navigation.test.mjs",

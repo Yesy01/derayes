@@ -5,6 +5,11 @@ import NotFound from './not-found';
 import { SiteLayout } from './layout';
 import { Marketplace } from '@/components/marketplace';
 import { OpportunityDetail } from '@/components/opportunity-detail';
+import {
+  AskPage,
+  ExpansionPage,
+  IncubationPage,
+} from '@/components/venture-pages';
 import { useRoute } from '@/lib/navigation';
 import { getOpportunity, views } from '@/lib/opportunities';
 import './globals.css';
@@ -20,12 +25,18 @@ function App() {
   const isDetail = !!opportunity && !!view && parts.length <= 3;
   const title =
     path === '/'
-      ? 'Trust before opportunity'
+      ? 'Tokenisation readiness for real-world assets'
       : path === '/opportunities'
         ? 'Opportunity marketplace'
-        : isDetail
-          ? `${view.label} — ${opportunity.name}`
-          : 'Page not found';
+        : path === '/incubation'
+          ? 'What incubation changed'
+          : path === '/expansion'
+            ? 'Expansion pathway'
+            : path === '/ask'
+              ? 'Venture Day ask'
+              : isDetail
+                ? `${view.label} — ${opportunity.name}`
+                : 'Page not found';
   useEffect(() => {
     document.title = `${title} | Derayes`;
     const frame = requestAnimationFrame(() => {
@@ -45,6 +56,12 @@ function App() {
         <Home />
       ) : path === '/opportunities' ? (
         <Marketplace />
+      ) : path === '/incubation' ? (
+        <IncubationPage />
+      ) : path === '/expansion' ? (
+        <ExpansionPage />
+      ) : path === '/ask' ? (
+        <AskPage />
       ) : isDetail ? (
         <OpportunityDetail
           key={`${opportunity.id}-${view.id}`}

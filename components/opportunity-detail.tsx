@@ -7,10 +7,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
-  Check,
-  CheckCheck,
   ChevronDown,
-  Copy,
   FileText,
   Fingerprint,
   Info,
@@ -19,7 +16,6 @@ import {
   TriangleAlert,
   Clock3,
   CircleCheck,
-  CircleDashed,
   Wallet,
   CalendarDays,
   Building2,
@@ -46,7 +42,6 @@ import {
   views,
   money,
   fundTotals,
-  displayDate,
   documentsFor,
   recordPayload,
   sha256,
@@ -56,6 +51,15 @@ import {
   type DemoDocument,
 } from '@/lib/opportunities';
 import { recordHashes } from '@/lib/record-hashes';
+import {
+  ChecklistItem,
+  MockTokenCard,
+  ReadinessScore,
+  RecordHashCard,
+  RiskCard,
+  StatusBadge,
+  TimelineItem,
+} from '@/components/trust-components';
 
 function DocumentPreview({
   document: d,
@@ -131,7 +135,7 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
             <span className="small-tag">FICTIONAL PROJECT</span>
           </div>
           <p className="body-copy">{o.description}</p>
-          <dl className="definition-grid">
+          <dl className="definition-grid overview-definitions">
             <div>
               <dt>Underlying asset</dt>
               <dd>{o.asset}</dd>
@@ -140,8 +144,20 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
               <dt>Project operator</dt>
               <dd>{o.operator}</dd>
             </div>
+            <div>
+              <dt>Proposed use</dt>
+              <dd>{o.proposedUse}</dd>
+            </div>
+            <div>
+              <dt>Proposed contributor model</dt>
+              <dd>{o.contributorModel}</dd>
+            </div>
           </dl>
         </section>
+        <blockquote className="principle-quote">
+          “Tokenisation should not start with a smart contract. It should start
+          with verified assets, clear rights, and auditable records.”
+        </blockquote>
         <section className="panel" id="documents">
           <div className="panel-heading">
             <div>
@@ -161,12 +177,12 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
             <h2>Risks to understand</h2>
             <TriangleAlert size={20} className="risk-icon" />
           </div>
-          <RiskItem title={o.risk} text={o.riskDetail} open />
-          <RiskItem
+          <RiskCard title={o.risk} text={o.riskDetail} open />
+          <RiskCard
             title="Delivery and cost uncertainty"
             text="Schedules and budgets are illustrative assumptions. Delays, supplier issues, and cost increases could affect the project's ability to complete its plan."
           />
-          <RiskItem
+          <RiskCard
             title="Asset value and liquidity"
             text="Asset backing does not guarantee value, repayment, or a timely exit. Assets may lose value and may be difficult to sell. This demo offers no returns or financial commitments."
           />
@@ -177,37 +193,21 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
           <span className="large-icon">
             <ShieldCheck size={28} />
           </span>
-          <p className="eyebrow">EVIDENCE SNAPSHOT</p>
-          <h2>
-            A clearer picture.
-            <br />
-            One open question.
-          </h2>
-          <div className="summary-number">
-            <strong>
-              5<span>/6</span>
-            </strong>
-            <span>
-              demo checks
-              <br />
-              completed
-            </span>
-          </div>
-          <Progress
-            value={(5 / 6) * 100}
-            aria-label="Five of six demo checks completed"
-          />
+          <p className="eyebrow">TOKENISATION READINESS</p>
+          <h2>{o.readiness}% ready for the next review.</h2>
+          <ReadinessScore value={o.readiness} />
           <p className="status-line">
-            <span className="amber-dot" />1 evidence item needs attention
+            <span className="amber-dot" />
+            {o.verificationStatus}
           </p>
           <Link
-            href={`/opportunities/${o.id}/trust`}
+            href={`/opportunities/${o.id}/readiness`}
             className="button primary full-width"
           >
-            View trust checklist <ArrowRight size={17} />
+            View readiness breakdown <ArrowRight size={17} />
           </Link>
           <p className="fine-print">
-            Checklist completeness is not a trust score, endorsement, or
+            Readiness is an illustrative review aid, not approval or a
             guarantee.
           </p>
         </section>
@@ -224,6 +224,10 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
             <Fingerprint size={17} /> Record integrity{' '}
             <ArrowUpRight size={16} />
           </Link>
+          <Link href={`/opportunities/${o.id}/token`}>
+            <Building2 size={17} /> Mock token preview{' '}
+            <ArrowUpRight size={16} />
+          </Link>
         </section>
         <Notice>
           All figures and verification outcomes are simulated. No real
@@ -233,142 +237,65 @@ function EvidenceOverview({ o }: { o: Opportunity }) {
     </div>
   );
 }
-function RiskItem({
-  title,
-  text,
-  open = false,
-}: {
-  title: string;
-  text: string;
-  open?: boolean;
-}) {
-  return (
-    <details className="risk-item" open={open}>
-      <summary>
-        <span>
-          <TriangleAlert size={16} />
-          {title}
-        </span>
-        <ChevronDown size={16} />
-      </summary>
-      <p>{text}</p>
-    </details>
-  );
-}
 function TrustChecklist({ o }: { o: Opportunity }) {
-  const docs = documentsFor(o);
-  const checks = [
-    {
-      title: 'Asset identity & ownership',
-      description:
-        'The sample ownership summary matches the asset and operator named in the project profile. No independent title search has taken place.',
-      doc: docs[0],
-    },
-    {
-      title: 'Operator disclosure',
-      description:
-        'The sample operator identity and responsibilities are consistently disclosed. No real corporate registry or background check has taken place.',
-      doc: docs[1],
-    },
-    {
-      title: 'Proposed budget',
-      description:
-        'The disclosed allocation categories add up to the proposed project budget. Figures are simulated and not audited.',
-      doc: docs[2],
-    },
-    {
-      title: 'Risk disclosure',
-      description:
-        'The sample risk register describes execution, asset-value, and liquidity risks. Disclosure does not resolve those risks.',
-      doc: docs[3],
-    },
-    {
-      title: 'Update & reporting trail',
-      description:
-        'Four dated project updates are available, including a reported use-of-funds statement. The trail is illustrative.',
-      doc: docs[2],
-    },
-    { title: o.risk, description: o.riskDetail, doc: docs[3], pending: true },
-  ];
   return (
     <>
       <div className="view-heading">
         <p className="eyebrow">EVIDENCE, NOT ASSUMPTIONS</p>
-        <h2>Trust checklist</h2>
+        <h2>Verification checklist</h2>
         <p>
           See what has been checked, the supporting evidence, and what remains
           unresolved.
         </p>
       </div>
       <div className="detail-grid">
-        <section className="panel checklist-panel">
+        <div className="checklist-groups">
           <div className="panel-heading">
-            <h3>Due diligence overview</h3>
+            <h3>Readiness checklist</h3>
             <span className="muted-label">As of 8 Sep 2026</span>
           </div>
-          {checks.map((c, i) => (
-            <details
-              className={`checklist-item ${c.pending ? 'pending' : ''}`}
-              key={c.title}
-              open={c.pending}
-            >
-              <summary>
-                <span className="check-status">
-                  {c.pending ? (
-                    <CircleDashed size={21} />
-                  ) : (
-                    <CircleCheck size={21} />
-                  )}
-                </span>
-                <span className="check-name">
-                  <small>CHECK 0{i + 1}</small>
-                  <strong>{c.title}</strong>
-                </span>
-                <span
-                  className={`status-badge ${c.pending ? 'amber' : 'green'}`}
-                >
-                  {c.pending ? 'Open item' : 'Reviewed'}
-                </span>
-                <ChevronDown size={16} />
-              </summary>
-              <div className="check-detail">
-                <p>{c.description}</p>
-                <DocumentPreview document={c.doc} compact />
-              </div>
-            </details>
+          {o.checklist.map((group, groupIndex) => (
+            <section className="panel checklist-panel" key={group.section}>
+              <h3 className="checklist-section-title">{group.section}</h3>
+              {group.items.map((item, itemIndex) => (
+                <ChecklistItem
+                  key={item.title}
+                  {...item}
+                  index={
+                    o.checklist
+                      .slice(0, groupIndex)
+                      .reduce(
+                        (total, current) => total + current.items.length,
+                        0,
+                      ) +
+                    itemIndex +
+                    1
+                  }
+                />
+              ))}
+            </section>
           ))}
-        </section>
+        </div>
         <aside className="context-column">
           <section className="panel trust-summary">
             <span className="large-icon">
               <ShieldCheck size={28} />
             </span>
-            <h2>Review status</h2>
-            <div className="summary-number">
-              <strong>
-                5<span>/6</span>
-              </strong>
-              <span>
-                checks completed
-                <br />
-                in this demo
-              </span>
-            </div>
-            <Progress
-              value={(5 / 6) * 100}
-              aria-label="Five of six evidence checks complete"
-            />
+            <h2>{o.verificationStatus}</h2>
+            <ReadinessScore value={o.readiness} />
             <div className="review-legend">
               <p>
-                <span className="legend-dot burgundy" />5 reviewed
+                <span className="legend-dot burgundy" />
+                Completed
               </p>
               <p>
-                <span className="legend-dot amber-bg" />1 open item
+                <span className="legend-dot amber-bg" />
+                Action required
               </p>
             </div>
             <Notice>
-              “Reviewed” means sample evidence is present and internally
-              consistent. It does not mean the asset is safe or approved.
+              Statuses describe sample workflow progress. They are not legal,
+              regulatory, or investment approval.
             </Notice>
           </section>
           <section className="attention-card">
@@ -412,12 +339,12 @@ function FundsDashboard({ o }: { o: Opportunity }) {
       </div>
       <div className="metric-grid">
         <section className="metric">
-          <span>Proposed project budget</span>
+          <span>Proposed funding requirement</span>
           <strong>{money(o.budget)}</strong>
           <small>Illustrative allocation</small>
         </section>
         <section className="metric">
-          <span>Reported used</span>
+          <span>Simulated reported use</span>
           <strong>{money(totals.used)}</strong>
           <small>{totals.percent}% of proposed budget</small>
         </section>
@@ -465,7 +392,7 @@ function FundsDashboard({ o }: { o: Opportunity }) {
         </section>
         <section className="panel spending-panel">
           <div className="panel-heading">
-            <h2>Reported use</h2>
+            <h2>Simulated reported use</h2>
             <span className="status-badge neutral">5 Sep 2026</span>
           </div>
           {o.allocation.map((a) => (
@@ -495,7 +422,7 @@ function FundsDashboard({ o }: { o: Opportunity }) {
             <TableRow>
               <TableHead>Purpose</TableHead>
               <TableHead>Planned</TableHead>
-              <TableHead>Reported used</TableHead>
+              <TableHead>Simulated use</TableHead>
               <TableHead>Remaining</TableHead>
             </TableRow>
           </TableHeader>
@@ -520,9 +447,10 @@ function FundsDashboard({ o }: { o: Opportunity }) {
         </Table>
       </section>
       <Notice>
-        These figures demonstrate operator reporting, not bank-verified
-        transactions. Derayes has not collected, held, or disbursed funds.
-        Unused allocation is a budget balance, not money in an account.
+        These figures demonstrate a proposed reporting workflow, not
+        bank-verified transactions. Derayes has not collected, held, or
+        disbursed funds. Unused allocation is a budget balance, not money in an
+        account.
       </Notice>
     </>
   );
@@ -545,36 +473,8 @@ function UpdateTimeline({ o }: { o: Opportunity }) {
             <span className="muted-label">4 demo records · Newest first</span>
           </div>
           <div className="timeline">
-            {o.milestones.map((m, i) => (
-              <article
-                className={`timeline-event ${m.status === 'Open item' ? 'event-open' : ''}`}
-                key={m.date}
-              >
-                <span className="timeline-marker">
-                  {m.status === 'Open item' ? (
-                    <TriangleAlert size={15} />
-                  ) : (
-                    <Check size={15} />
-                  )}
-                </span>
-                <div className="event-meta">
-                  <time dateTime={m.date}>{displayDate(m.date)}</time>
-                  <span
-                    className={`status-badge ${m.status === 'Open item' ? 'amber' : 'neutral'}`}
-                  >
-                    {m.status}
-                  </span>
-                </div>
-                <h3>{m.title}</h3>
-                <p>{m.description}</p>
-                <div className="event-footer">
-                  <span>Project operator · Sample update</span>
-                  <DocumentPreview
-                    document={documentsFor(o)[[3, 2, 0, 1][i]]}
-                    compact
-                  />
-                </div>
-              </article>
+            {o.milestones.map((m) => (
+              <TimelineItem item={m} key={m.date} />
             ))}
           </div>
         </section>
@@ -614,6 +514,114 @@ function UpdateTimeline({ o }: { o: Opportunity }) {
     </>
   );
 }
+
+function ReadinessDashboard({ o }: { o: Opportunity }) {
+  return (
+    <>
+      <div className="view-heading">
+        <p className="eyebrow">TOKENISATION READINESS ASSESSMENT</p>
+        <h2>{o.readiness}% ready — more foundation work is required.</h2>
+        <p>
+          Readiness brings asset, document, legal, protection, technical, and
+          integrity questions into one review.
+        </p>
+      </div>
+      <div className="detail-grid">
+        <section className="panel readiness-panel">
+          <div className="readiness-hero-score">
+            <strong>{o.readiness}%</strong>
+            <span>overall illustrative readiness</span>
+          </div>
+          <div className="readiness-breakdown">
+            {o.readinessBreakdown.map((metric) => (
+              <div className="readiness-row" key={metric.label}>
+                <div>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}%</strong>
+                </div>
+                <Progress
+                  value={metric.value}
+                  aria-label={`${metric.label}: ${metric.value} percent`}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+        <aside className="context-column">
+          <section className="attention-card readiness-interpretation">
+            <TriangleAlert size={21} />
+            <h3>Readiness interpretation</h3>
+            <p>
+              This asset is not ready for tokenisation yet. It requires legal
+              review, regulatory classification, and clearer contributor
+              protection before any token can represent real participation
+              rights.
+            </p>
+          </section>
+          <section className="panel quick-links">
+            <h3>Continue the review</h3>
+            <Link href={`/opportunities/${o.id}/trust`}>
+              <ShieldCheck size={17} /> Verification checklist{' '}
+              <ArrowUpRight size={16} />
+            </Link>
+            <Link href={`/opportunities/${o.id}/token`}>
+              <Building2 size={17} /> Mock token preview{' '}
+              <ArrowUpRight size={16} />
+            </Link>
+          </section>
+          <Notice>
+            The score is fixed sample data for product demonstration. It is not
+            a regulatory decision, rating, recommendation, or prediction.
+          </Notice>
+        </aside>
+      </div>
+    </>
+  );
+}
+
+function TokenPreview({ o }: { o: Opportunity }) {
+  return (
+    <>
+      <div className="view-heading">
+        <p className="eyebrow">MOCK TOKEN PREVIEW</p>
+        <h2>See what a future record might reference.</h2>
+        <p>
+          The preview makes unresolved rights and controls visible. It does not
+          issue, mint, sell, or transfer anything.
+        </p>
+      </div>
+      <div className="detail-grid">
+        <MockTokenCard opportunity={o} />
+        <aside className="context-column">
+          <section className="panel integrity-explainer">
+            <h3>What must happen first</h3>
+            <p>
+              <CircleCheck size={18} />
+              Define legally enforceable participation rights.
+            </p>
+            <p>
+              <CircleCheck size={18} />
+              Complete regulatory classification and counsel review.
+            </p>
+            <p>
+              <CircleCheck size={18} />
+              Design contributor protections and dispute handling.
+            </p>
+            <p>
+              <CircleCheck size={18} />
+              Connect approved off-chain records to technical controls.
+            </p>
+          </section>
+          <Notice>
+            This preview is a product-design artefact. No blockchain transaction
+            or token contract has been created.
+          </Notice>
+        </aside>
+      </div>
+    </>
+  );
+}
+
 function IntegrityRecord({ o }: { o: Opportunity }) {
   const [result, setResult] = useState<'idle' | 'checking' | 'match' | 'error'>(
     'idle',
@@ -657,7 +665,7 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
                 </span>
                 <div>
                   <h2>Project snapshot</h2>
-                  <p>{o.name} · Version 3</p>
+                  <p>{o.name} · Version 5</p>
                 </div>
               </div>
               <span className="small-tag">MOCK RECORD</span>
@@ -665,7 +673,7 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
             <dl className="record-metadata">
               <div>
                 <dt>Record ID</dt>
-                <dd>DRY-{o.id.toUpperCase()}-003</dd>
+                <dd>DRY-{o.id.toUpperCase()}-005</dd>
               </div>
               <div>
                 <dt>Illustrative timestamp (UTC)</dt>
@@ -683,21 +691,22 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
                 <dt>Source</dt>
                 <dd>Fictional operator disclosure</dd>
               </div>
-            </dl>
-            <div className="hash-box">
               <div>
-                <span>CONTENT FINGERPRINT</span>
-                <button type="button" onClick={copyHash} className="text-link">
-                  {copy === 'Hash copied' ? (
-                    <CheckCheck size={15} />
-                  ) : (
-                    <Copy size={15} />
-                  )}
-                  <span aria-live="polite">{copy}</span>
-                </button>
+                <dt>Mock transaction/reference ID</dt>
+                <dd>TX-DEMO-{o.id.toUpperCase()}-0908</dd>
               </div>
-              <code>{expected}</code>
-            </div>
+              <div>
+                <dt>Recorded status</dt>
+                <dd>
+                  <StatusBadge tone="neutral">Recorded · demo</StatusBadge>
+                </dd>
+              </div>
+            </dl>
+            <RecordHashCard
+              hash={expected}
+              onCopy={copyHash}
+              copyLabel={copy}
+            />
             <details className="payload-details">
               <summary>
                 Inspect the exact snapshot content <ChevronDown size={16} />
@@ -756,16 +765,18 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
             </div>
             <div className="record-history">
               {[
-                { v: 3, date: '8 Sep 2026', title: 'Risk register updated' },
+                { v: 5, date: '8 Sep 2026', title: 'Readiness score updated' },
                 {
-                  v: 2,
-                  date: '5 Sep 2026',
-                  title: 'Use-of-funds snapshot recorded',
+                  v: 4,
+                  date: '8 Sep 2026',
+                  title: 'Verification status changed',
                 },
+                { v: 3, date: '5 Sep 2026', title: 'Risk summary updated' },
+                { v: 2, date: '28 Aug 2026', title: 'Budget document hashed' },
                 {
                   v: 1,
                   date: '20 Aug 2026',
-                  title: 'Initial evidence pack created',
+                  title: 'Project summary v1 uploaded',
                 },
               ].map((r) => (
                 <div key={r.v}>
@@ -774,7 +785,7 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
                     <strong>{r.title}</strong>
                     <span>{r.date}</span>
                   </div>
-                  {r.v === 3 && (
+                  {r.v === 5 && (
                     <span className="status-badge neutral">Current</span>
                   )}
                 </div>
@@ -784,6 +795,10 @@ function IntegrityRecord({ o }: { o: Opportunity }) {
         </div>
         <aside className="context-column">
           <section className="panel integrity-explainer">
+            <p className="integrity-statement">
+              Derayes may use blockchain-backed hashes or timestamps to make key
+              records harder to alter and easier to audit.
+            </p>
             <h3>What this tells you</h3>
             <p>
               <CircleCheck size={18} />
@@ -848,25 +863,27 @@ export function OpportunityDetail({
           </p>
         </div>
         <span className="evidence-status">
-          <ShieldCheck size={17} /> Evidence reviewed <span>DEMO</span>
+          <ShieldCheck size={17} />
+          {o.verificationStatus}
+          <span>DEMO</span>
         </span>
       </header>
       <div className="detail-top-facts">
         <div>
-          <span>Proposed budget</span>
+          <span>Funding requirement</span>
           <strong>{money(o.budget)}</strong>
         </div>
         <div>
-          <span>Project horizon</span>
+          <span>Readiness</span>
+          <strong>{o.readiness}%</strong>
+        </div>
+        <div>
+          <span>Risk</span>
+          <strong>{o.riskLevel}</strong>
+        </div>
+        <div>
+          <span>Project timeline</span>
           <strong>{o.duration}</strong>
-        </div>
-        <div>
-          <span>Evidence checks</span>
-          <strong>5 of 6 reviewed</strong>
-        </div>
-        <div>
-          <span>Latest update</span>
-          <strong>8 Sep 2026</strong>
         </div>
       </div>
       <nav className="detail-nav" aria-label="Opportunity evidence">
@@ -877,7 +894,7 @@ export function OpportunityDetail({
             aria-current={view === v.id ? 'page' : undefined}
           >
             {v.label}
-            {v.id === 'trust' && <span className="nav-count">1</span>}
+            {v.id === 'trust' && <span className="nav-count">4</span>}
           </Link>
         ))}
       </nav>
@@ -886,10 +903,14 @@ export function OpportunityDetail({
           <EvidenceOverview o={o} />
         ) : view === 'trust' ? (
           <TrustChecklist o={o} />
+        ) : view === 'readiness' ? (
+          <ReadinessDashboard o={o} />
         ) : view === 'funds' ? (
           <FundsDashboard o={o} />
         ) : view === 'updates' ? (
           <UpdateTimeline o={o} />
+        ) : view === 'token' ? (
+          <TokenPreview o={o} />
         ) : (
           <IntegrityRecord key={o.id} o={o} />
         )}

@@ -35,6 +35,8 @@ for (const o of opportunities) {
       o.allocation.reduce((sum, row) => sum + row.planned, 0),
       o.budget,
     );
+    assert.ok(o.readiness >= 0 && o.readiness <= 100);
+    assert.equal(o.readinessBreakdown.length, 7);
     for (const row of o.allocation) {
       assert.ok(row.used >= 0);
       assert.ok(row.used <= row.planned);
@@ -54,7 +56,9 @@ for (const o of opportunities) {
       ),
     );
     assert.ok(docs.find((d) => d.id === 'risk').body.includes(o.riskDetail));
-    assert.ok(o.milestones[1].description.includes(money(fundTotals(o).used)));
+    assert.ok(
+      o.milestones.some((m) => m.description.includes(money(o.budget))),
+    );
     assert.ok(
       o.milestones.every(
         (m, i) => i === 0 || m.date <= o.milestones[i - 1].date,
@@ -89,5 +93,42 @@ test('money renders Nigerian naira with full amounts, millions, and billions', (
 test('all evidence destinations are declared', () =>
   assert.deepEqual(
     views.map((v) => v.id),
-    ['overview', 'trust', 'funds', 'updates', 'integrity'],
+    [
+      'overview',
+      'trust',
+      'readiness',
+      'funds',
+      'updates',
+      'token',
+      'integrity',
+    ],
   ));
+
+test('Venture Day sample data uses the requested Nigerian assets and readiness scores', () => {
+  assert.deepEqual(
+    opportunities.map(({ name, budget, readiness }) => ({
+      name,
+      budget,
+      readiness,
+    })),
+    [
+      {
+        name: 'Lagos Co-Living Renovation Project',
+        budget: 85000000,
+        readiness: 42,
+      },
+      {
+        name: 'Maize Storage Facility Upgrade',
+        budget: 25000000,
+        readiness: 31,
+      },
+      {
+        name: 'Food Processing Equipment Upgrade',
+        budget: 15000000,
+        readiness: 38,
+      },
+    ],
+  );
+  assert.equal(opportunities[0].token.symbol, 'DRY-LAGOS-001');
+  assert.equal(opportunities[0].token.supply, '10,000 demo units');
+});
